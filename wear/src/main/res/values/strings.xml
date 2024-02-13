@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Hour Signal</string>
+    <string name="title_activity_main">HourSignal</string>
+    <string name="settings">Settings</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="status">Status:</string>
+    <string name="status_run">running 🟢</string>
+    <string name="status_stop">stop 🔴</string>
+</resources>

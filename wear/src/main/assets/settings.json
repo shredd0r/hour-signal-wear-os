@@ -1,0 +1,11 @@
+{
+  "periodSignalRegion": {
+    "everyHour": true
+  },
+
+  "soundRegion": {
+    "vibration": "temp",
+    "soundName": "sound_peeb.mp3",
+    "volume": 0.8
+  }
+}
