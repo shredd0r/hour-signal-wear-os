@@ -1,13 +1,11 @@
 package github.vodianov.hoursignal.service.signal
 
 import android.content.Context
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import github.vodianov.hoursignal.service.signal.worker.SignalWorker
-import java.time.Duration
 
 class SignalServiceImpl(context: Context) : SignalService {
 
@@ -15,12 +13,10 @@ class SignalServiceImpl(context: Context) : SignalService {
     private val workManager = WorkManager.getInstance(context)
 
     override fun start() {
-        workManager.enqueueUniquePeriodicWork(
+        workManager.enqueueUniqueWork(
             workName,
-            ExistingPeriodicWorkPolicy.REPLACE,
-            PeriodicWorkRequestBuilder<SignalWorker>(
-                Duration.ofMinutes(PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS))
-                .build())
+            ExistingWorkPolicy.REPLACE,
+            OneTimeWorkRequestBuilder<SignalWorker>().build())
     }
 
     override fun stop() {
