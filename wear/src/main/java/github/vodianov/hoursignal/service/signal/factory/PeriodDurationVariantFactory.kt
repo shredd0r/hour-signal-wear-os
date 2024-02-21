@@ -24,9 +24,4 @@ class PeriodDurationVariantFactory {
             return PeriodDurationType.CUSTOM
         }
     }
-
-
-
-
-
 }

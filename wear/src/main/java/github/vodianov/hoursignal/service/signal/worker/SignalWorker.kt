@@ -19,6 +19,7 @@ class SignalWorker(settingsRepository: SettingsRepository,
     private val logTag = "SignalWorker"
 
     init {
+        Log.d(logTag, "init new instance")
         initialMediaPlayer()
     }
 
@@ -30,7 +31,10 @@ class SignalWorker(settingsRepository: SettingsRepository,
     override suspend fun doWork(): Result {
         val periodDurationVariant = PeriodDurationVariantFactory.getVariantBy(settings)
         Log.d(logTag, "start period duration workflow")
-        periodDurationVariant.workflow(mediaPlayer)
+
+        while(!isStopped) {
+            periodDurationVariant.workflow(mediaPlayer)
+        }
 
         return Result.success()
     }
