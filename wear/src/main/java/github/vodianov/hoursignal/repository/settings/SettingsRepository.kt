@@ -1,4 +1,4 @@
-package github.vodianov.hoursignal.repository.base
+package github.vodianov.hoursignal.repository.settings
 
 import github.vodianov.hoursignal.dto.settings.Settings
 

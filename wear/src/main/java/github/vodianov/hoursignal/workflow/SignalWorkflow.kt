@@ -4,8 +4,8 @@ import android.media.MediaPlayer
 import android.util.Log
 import github.vodianov.hoursignal.condition.signaloff.SignalOffConditionFactory
 import github.vodianov.hoursignal.dto.settings.Settings
-import github.vodianov.hoursignal.repository.base.SettingsRepository
-import github.vodianov.hoursignal.repository.base.SoundRepository
+import github.vodianov.hoursignal.repository.settings.SettingsRepository
+import github.vodianov.hoursignal.repository.sound.SoundRepository
 import github.vodianov.hoursignal.service.DeviceInfoService
 import github.vodianov.hoursignal.service.signal.SignalService
 import github.vodianov.hoursignal.condition.periodduration.PeriodDurationConditionFactory
@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit
 class SignalWorkflow(settingsRepository: SettingsRepository,
                      private val soundRepository: SoundRepository,
                      private val signalService: SignalService,
-                     private val deviceInfoService: DeviceInfoService,
                      private val signalOffConditionFactory: SignalOffConditionFactory) {
 
     private val logTag = "SignalWorkflow"

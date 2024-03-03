@@ -5,9 +5,12 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import github.vodianov.hoursignal.repository.valuestorage.KeyValueRepository
 import github.vodianov.hoursignal.worker.SignalWorker
 
-class SignalServiceImpl(private val context: Context) : SignalService {
+class SignalServiceImpl(
+    private val context: Context,
+    private val keyValueRepository: KeyValueRepository) : SignalService {
 
     private val workTag = "SignalWorkTag"
     private val workName = "SignalWorkName"
@@ -15,11 +18,12 @@ class SignalServiceImpl(private val context: Context) : SignalService {
 
     override fun start() {
         nextSignalIteration()
+        keyValueRepository.setIsRunning(true)
     }
 
     override fun stop() {
         initWorkManager()
-
+        keyValueRepository.setIsRunning(false)
         workManager.cancelAllWorkByTag(workTag)
     }
 

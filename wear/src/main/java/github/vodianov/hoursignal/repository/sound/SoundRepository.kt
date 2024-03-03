@@ -1,4 +1,4 @@
-package github.vodianov.hoursignal.repository.base
+package github.vodianov.hoursignal.repository.sound
 
 import java.io.FileDescriptor
 import java.io.InputStream

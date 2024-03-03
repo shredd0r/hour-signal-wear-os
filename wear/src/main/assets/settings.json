@@ -1,4 +1,6 @@
 {
+  "startAfterBoot" : true,
+
   "periodSignalRegion": {
     "everyHour": true
   },

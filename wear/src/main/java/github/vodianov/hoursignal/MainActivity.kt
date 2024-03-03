@@ -1,25 +1,25 @@
 package github.vodianov.hoursignal
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.activity.ComponentActivity
+import dagger.hilt.android.AndroidEntryPoint
 import github.vodianov.hoursignal.databinding.ActivityMainBinding
 import github.vodianov.hoursignal.service.signal.SignalService
-import github.vodianov.hoursignal.service.signal.SignalServiceImpl
+import javax.inject.Inject
 
-class MainActivity : Activity() {
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
 
     private val logTag = "MainActivity"
     private lateinit var binding: ActivityMainBinding
-    private lateinit var signalService: SignalService
+    @Inject lateinit var signalService: SignalService
 
     private fun initialize() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        signalService = SignalServiceImpl(this)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

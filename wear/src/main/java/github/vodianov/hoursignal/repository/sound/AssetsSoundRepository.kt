@@ -1,8 +1,7 @@
-package github.vodianov.hoursignal.repository.impl
+package github.vodianov.hoursignal.repository.sound
 
 import android.content.Context
 import android.content.res.AssetManager
-import github.vodianov.hoursignal.repository.base.SoundRepository
 import java.io.FileDescriptor
 
 class AssetsSoundRepository (context: Context) : SoundRepository {

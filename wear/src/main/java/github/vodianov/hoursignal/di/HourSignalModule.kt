@@ -10,13 +10,16 @@ import github.vodianov.hoursignal.condition.signaloff.SignalOffConditionFactory
 import github.vodianov.hoursignal.condition.signaloff.impl.AirplaneModeEnableSignalOffCondition
 import github.vodianov.hoursignal.condition.signaloff.impl.DNDEnableSignalOffCondition
 import github.vodianov.hoursignal.condition.signaloff.impl.IsChargingSignalOffCondition
-import github.vodianov.hoursignal.repository.base.SettingsRepository
-import github.vodianov.hoursignal.repository.base.SoundRepository
-import github.vodianov.hoursignal.repository.impl.AssetsJsonSettingRepository
-import github.vodianov.hoursignal.repository.impl.AssetsSoundRepository
+import github.vodianov.hoursignal.repository.settings.SettingsRepository
+import github.vodianov.hoursignal.repository.sound.SoundRepository
+import github.vodianov.hoursignal.repository.settings.AssetsJsonSettingRepository
+import github.vodianov.hoursignal.repository.sound.AssetsSoundRepository
+import github.vodianov.hoursignal.repository.valuestorage.KeyValueRepository
+import github.vodianov.hoursignal.repository.valuestorage.SharedReferencesKeyValueRepositoryImpl
 import github.vodianov.hoursignal.service.DeviceInfoService
 import github.vodianov.hoursignal.service.signal.SignalService
 import github.vodianov.hoursignal.service.signal.SignalServiceImpl
+import github.vodianov.hoursignal.workflow.BootStartWorkflow
 import github.vodianov.hoursignal.workflow.SignalWorkflow
 
 @Module
@@ -34,8 +37,9 @@ class HourSignalModule {
     }
 
     @Provides
-    fun signalService(@ApplicationContext context: Context): SignalService {
-        return SignalServiceImpl(context)
+    fun signalService(@ApplicationContext context: Context,
+                      keyValueRepository: KeyValueRepository): SignalService {
+        return SignalServiceImpl(context, keyValueRepository)
     }
 
     @Provides
@@ -56,8 +60,19 @@ class HourSignalModule {
     fun signalWorkflow(settingsRepository: SettingsRepository,
                        soundRepository: SoundRepository,
                        signalService: SignalService,
-                       deviceInfoService: DeviceInfoService,
                        signalOffConditionFactory: SignalOffConditionFactory) : SignalWorkflow {
-        return SignalWorkflow(settingsRepository, soundRepository, signalService, deviceInfoService, signalOffConditionFactory)
+        return SignalWorkflow(settingsRepository, soundRepository, signalService, signalOffConditionFactory)
+    }
+
+    @Provides
+    fun bootStartWorkflow(signalService: SignalService,
+                          settingsRepository: SettingsRepository,
+                          keyValueRepository: KeyValueRepository) : BootStartWorkflow {
+        return BootStartWorkflow(signalService, settingsRepository, keyValueRepository)
+    }
+
+    @Provides
+    fun sharedReferencesKeyValueRepositoryImpl(@ApplicationContext context: Context) : KeyValueRepository {
+        return SharedReferencesKeyValueRepositoryImpl(context)
     }
 }

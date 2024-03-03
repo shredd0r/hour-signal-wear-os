@@ -1,9 +1,9 @@
-package github.vodianov.hoursignal.repository.impl
+package github.vodianov.hoursignal.repository.settings
 
 import android.content.Context
 import android.content.res.AssetManager
 import github.vodianov.hoursignal.dto.settings.Settings
-import github.vodianov.hoursignal.repository.base.SettingsRepository
+import github.vodianov.hoursignal.repository.settings.SettingsRepository
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 
