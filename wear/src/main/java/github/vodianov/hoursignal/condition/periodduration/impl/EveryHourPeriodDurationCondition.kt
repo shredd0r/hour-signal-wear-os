@@ -1,13 +1,13 @@
-package github.vodianov.hoursignal.service.signal.variant
+package github.vodianov.hoursignal.condition.periodduration.impl
 
 import android.util.Log
+import github.vodianov.hoursignal.condition.periodduration.PeriodDurationCondition
 import java.time.LocalDateTime
-import java.util.concurrent.TimeUnit
 
 class
-EveryHourPeriodDurationVariant : PeriodDurationVariant {
+EveryHourPeriodDurationCondition : PeriodDurationCondition {
 
-    private val logTag = "EveryHourPeriodDurationVariant"
+    private val logTag = "EveryHourPeriodDurationCondition"
     private var previousHour = LocalDateTime.now().hour
     override fun isTimeForNewSignal(now: LocalDateTime): Boolean {
         if (previousHour != now.hour && now.minute == 0) {

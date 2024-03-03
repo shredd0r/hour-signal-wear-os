@@ -7,5 +7,11 @@
     "vibration": "temp",
     "soundName": "sound_peeb.mp3",
     "volume": 0.8
+  },
+
+  "muteSignalRegion": {
+    "muteWhenCharging": true,
+    "muteWhenDNDOn": true,
+    "muteWhenAirplaneModeOn": true
   }
 }

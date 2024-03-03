@@ -6,15 +6,15 @@ import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import github.vodianov.hoursignal.repository.base.SettingsRepository
 import github.vodianov.hoursignal.repository.base.SoundRepository
+import github.vodianov.hoursignal.service.DeviceInfoService
 import github.vodianov.hoursignal.service.signal.SignalService
-import github.vodianov.hoursignal.service.signal.worker.SignalWorkerFactory
+import github.vodianov.hoursignal.worker.SignalWorkerFactory
+import github.vodianov.hoursignal.workflow.SignalWorkflow
 import javax.inject.Inject
 
 @HiltAndroidApp
 class HourSignalApp : Application(), Configuration.Provider {
-    @Inject lateinit var settingsRepository: SettingsRepository
-    @Inject lateinit var soundRepository: SoundRepository
-    @Inject lateinit var signalService: SignalService
+    @Inject lateinit var signalWorkflow: SignalWorkflow
 
     override fun onCreate() {
         super.onCreate()
@@ -28,10 +28,7 @@ class HourSignalApp : Application(), Configuration.Provider {
     override fun getWorkManagerConfiguration(): Configuration {
         return Configuration.Builder()
             .setWorkerFactory(
-                SignalWorkerFactory(
-                    settingsRepository,
-                    soundRepository,
-                    signalService))
+                SignalWorkerFactory(signalWorkflow))
             .build()
     }
 }
