@@ -3,36 +3,35 @@ package github.vodianov.hoursignal
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import dagger.hilt.android.HiltAndroidApp
 import github.vodianov.hoursignal.repository.base.SettingsRepository
 import github.vodianov.hoursignal.repository.base.SoundRepository
-import github.vodianov.hoursignal.repository.impl.AssetsJsonSettingRepository
-import github.vodianov.hoursignal.repository.impl.AssetsSoundRepository
+import github.vodianov.hoursignal.service.signal.SignalService
 import github.vodianov.hoursignal.service.signal.worker.SignalWorkerFactory
+import javax.inject.Inject
 
-class HourSignalApp : Application() {
-    private lateinit var settingsRepository: SettingsRepository
-    private lateinit var soundRepository: SoundRepository
+@HiltAndroidApp
+class HourSignalApp : Application(), Configuration.Provider {
+    @Inject lateinit var settingsRepository: SettingsRepository
+    @Inject lateinit var soundRepository: SoundRepository
+    @Inject lateinit var signalService: SignalService
 
     override fun onCreate() {
         super.onCreate()
-        initialize()
         initializeWorkManager()
     }
 
-    private fun initialize() {
-        settingsRepository = AssetsJsonSettingRepository(this)
-        soundRepository = AssetsSoundRepository(this)
+    private fun initializeWorkManager() {
+        WorkManager.initialize(this, workManagerConfiguration)
     }
 
-    private fun initializeWorkManager() {
-        WorkManager.initialize(
-            this,
-            Configuration.Builder()
-                .setWorkerFactory(
-                    SignalWorkerFactory(
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setWorkerFactory(
+                SignalWorkerFactory(
                     settingsRepository,
-                    soundRepository)
-                )
-                .build())
+                    soundRepository,
+                    signalService))
+            .build()
     }
 }

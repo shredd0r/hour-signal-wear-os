@@ -5,7 +5,7 @@ import android.content.res.AssetManager
 import github.vodianov.hoursignal.repository.base.SoundRepository
 import java.io.FileDescriptor
 
-class AssetsSoundRepository constructor(context: Context) : SoundRepository {
+class AssetsSoundRepository (context: Context) : SoundRepository {
 
     private val folderName = "sounds"
     private val assets: AssetManager

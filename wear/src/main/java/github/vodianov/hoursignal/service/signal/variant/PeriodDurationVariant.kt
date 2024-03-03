@@ -1,7 +1,7 @@
 package github.vodianov.hoursignal.service.signal.variant
 
-import android.media.MediaPlayer
+import java.time.LocalDateTime
 
 interface PeriodDurationVariant {
-    suspend fun workflow(mediaPlayer: MediaPlayer)
+    fun isTimeForNewSignal(now: LocalDateTime) : Boolean
 }

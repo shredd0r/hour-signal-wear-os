@@ -6,14 +6,17 @@ import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import github.vodianov.hoursignal.repository.base.SettingsRepository
 import github.vodianov.hoursignal.repository.base.SoundRepository
+import github.vodianov.hoursignal.service.signal.SignalService
 
-class SignalWorkerFactory(private val settingsRepository: SettingsRepository,
-                          private val soundRepository: SoundRepository) : WorkerFactory() {
+class SignalWorkerFactory(
+    private val settingsRepository: SettingsRepository,
+    private val soundRepository: SoundRepository,
+    private val signalService: SignalService) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,
         workerParameters: WorkerParameters
     ): ListenableWorker? {
-        return SignalWorker(settingsRepository, soundRepository, appContext, workerParameters)
+        return SignalWorker(settingsRepository, soundRepository, signalService, appContext, workerParameters)
     }
 }

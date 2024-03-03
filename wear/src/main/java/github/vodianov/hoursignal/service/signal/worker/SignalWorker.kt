@@ -8,15 +8,24 @@ import androidx.work.WorkerParameters
 import github.vodianov.hoursignal.dto.settings.Settings
 import github.vodianov.hoursignal.repository.base.SettingsRepository
 import github.vodianov.hoursignal.repository.base.SoundRepository
+import github.vodianov.hoursignal.service.signal.SignalService
 import github.vodianov.hoursignal.service.signal.factory.PeriodDurationVariantFactory
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 
-class SignalWorker(settingsRepository: SettingsRepository,
+
+class SignalWorker (settingsRepository: SettingsRepository,
                    private val soundRepository: SoundRepository,
+                   private val signalService: SignalService,
                    appContext: Context,
                    params: WorkerParameters) : CoroutineWorker(appContext, params) {
     private val mediaPlayer = MediaPlayer()
     private val settings : Settings = settingsRepository.get()
     private val logTag = "SignalWorker"
+    private val sleepInSeconds = 5L
 
     init {
         Log.d(logTag, "init new instance")
@@ -28,14 +37,25 @@ class SignalWorker(settingsRepository: SettingsRepository,
         mediaPlayer.setDataSource(sound)
         mediaPlayer.prepare()
     }
-    override suspend fun doWork(): Result {
+    override suspend fun doWork(): Result = coroutineScope {
         val periodDurationVariant = PeriodDurationVariantFactory.getVariantBy(settings)
-        Log.d(logTag, "start period duration workflow")
 
-        while(!isStopped) {
-            periodDurationVariant.workflow(mediaPlayer)
+        while(isActive) {
+            if (periodDurationVariant.isTimeForNewSignal(LocalDateTime.now())) {
+                Log.d(logTag, "start mediaPlayer")
+                mediaPlayer.start()
+                break
+            }
+            else {
+                Log.d(logTag, "start sleep")
+                delay(TimeUnit.SECONDS.toMillis(sleepInSeconds))
+            }
+
         }
 
-        return Result.success()
+        signalService.nextSignalIteration()
+        Log.d(logTag, "added new worker")
+
+        return@coroutineScope Result.success()
     }
 }

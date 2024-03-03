@@ -4,4 +4,5 @@ interface SignalService {
     fun start()
     fun stop()
     fun isRunning() : Boolean
+    fun nextSignalIteration()
 }
